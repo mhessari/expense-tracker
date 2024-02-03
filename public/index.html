@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense Tracker</title>
+  <style>
+    /* Optional: Add some basic styling */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    button {
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Hello, Expense Tracker!</h1>
+
+  <form id="expense-form">
+    <label for="expense-name">Expense Name:</label>
+    <input type="text" id="expense-name" required>
+
+    <label for="expense-amount">Expense Amount:</label>
+    <input type="number" id="expense-amount" required>
+
+    <button type="submit">Add Expense</button>
+  </form>
+
+  <ul id="expense-list"></ul>
+
+  <script src="app.js"></script>
+</body>
+</html>
