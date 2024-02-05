@@ -55,15 +55,11 @@ document.addEventListener('DOMContentLoaded', function () {
         method: 'DELETE',
       });
 
-      // Ensure the response status indicates success (2xx range)
-      if (response.ok) {
-        // Update the UI after successful delete
-        const expenseItem = document.getElementById(`expense-${expenseId}-details`);
-        if (expenseItem) {
-          expenseList.removeChild(expenseItem.parentElement); // Remove the entire <li> element
-        }
-      } else {
-        console.error('Failed to delete expense. Server response:', response);
+      // Update the UI after successful delete
+      const expenseItem = document.getElementById(`expense-${expenseId}-details`);
+      if (expenseItem) {
+        expenseList.removeChild(expenseItem.parentElement); // Remove the entire <li> element
+        updateSummaryAndCharts();
       }
     } catch (error) {
       console.error('Error deleting expense:', error);
@@ -96,6 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
           const listItem = createExpenseListItem(newExpense);
           expenseList.appendChild(listItem);
           expenseForm.reset();
+          updateSummaryAndCharts();  // Add this line
         } else {
           console.error('Failed to add expense. Server response:', response);
         }
@@ -111,5 +108,80 @@ document.addEventListener('DOMContentLoaded', function () {
     addExpense();
   });
 
-  // ... (existing code)
+// Function to update summary and charts
+
+function updateSummaryAndCharts() {
+    // Fetch expenses from the API on page load
+    fetch('http://localhost:3000/api/expenses')
+      .then(response => response.json())
+      .then(expenses => {
+        // Update chart data and labels
+        window.myChart.data.labels = expenses.map(expense => expense.name);
+        window.myChart.data.datasets[0].data = expenses.map(expense => expense.amount);
+        window.myChart.update();
+        
+        // Update summary
+        updateSummary(expenses);
+      })
+      .catch(error => {
+        console.error('Error fetching expenses:', error);
+      });
+  }
+
+  // Function to update summary
+  function updateSummary(expenses) {
+    const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+    
+    // Update summary element
+    const summaryElement = document.getElementById('summary');
+    summaryElement.innerHTML = `Total Expenses: $${totalExpenses.toFixed(2)}`;
+  }
+
+  // Fetch expenses from the API on page load
+  fetch('http://localhost:3000/api/expenses')
+    .then(response => response.json())
+    .then(expenses => {
+      // Populate the UI with default expenses
+      expenses.forEach(expense => {
+        const listItem = createExpenseListItem(expense);
+        expenseList.appendChild(listItem);
+      });
+
+      // Create a new chart and store it in a global variable
+      const chartCanvas = document.getElementById('expense-chart');
+      const ctx = chartCanvas.getContext('2d');
+
+      const chartData = {
+        labels: expenses.map(expense => expense.name),
+        datasets: [
+          {
+            label: 'Expense Amount',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1,
+            data: expenses.map(expense => expense.amount),
+          },
+        ],
+      };
+
+      const chartOptions = {
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      };
+
+      window.myChart = new Chart(ctx, {
+        type: 'bar',
+        data: chartData,
+        options: chartOptions,
+      });
+      
+      // Update summary after fetching expenses
+      updateSummary(expenses);
+    })
+    .catch(error => {
+      console.error('Error fetching expenses:', error);
+    });
 });
