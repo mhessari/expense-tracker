@@ -1,71 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Expense Tracker</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="styles.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    /* Optional: Add some basic styling */
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Expense Tracker</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      /* Optional: Add some basic styling */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
 
-    form {
-      margin-bottom: 20px;
-    }
+      form {
+        margin-bottom: 20px;
+      }
 
-    ul {
-      list-style-type: none;
-      padding: 0;
-    }
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
 
-    li {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
+      li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
 
-    button {
-      margin-left: 10px;
-    }
-  </style>
-</head>
-<body>
-  <h1>Welcome to Expense Tracker!</h1><br>
-  <h3>Start adding your expenses below:</h3>
+      button {
+        margin-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Welcome to Expense Tracker!</h1>
+    <br />
+    <h3>Start adding your expenses below:</h3>
 
-  <div class="container">
-  <div class="row">
-    <div class="col-md-8">
-      <!-- Your main content goes here -->
-      <form id="expense-form">
-    <label for="expense-name">Expense Name:</label>
-    <input type="text" id="expense-name" required>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8">
+          <!-- Your main content goes here -->
+          <form id="expense-form">
+            <label for="expense-name">Expense Name:</label>
+            <input type="text" id="expense-name" required />
 
-    <label for="expense-amount">Expense Amount:</label>
-    <input type="number" id="expense-amount" required>
+            <label for="expense-amount">Expense Amount:</label>
+            <input type="number" id="expense-amount" required />
 
-    <button type="submit">Add Expense</button>
-  </form>
+            <button type="submit">Add Expense</button>
+          </form>
+        </div>
+        <div class="col-md-4">
+          <!-- Your sidebar or additional content goes here -->
+          <div id="summary"></div>
+
+          <ul id="expense-list"></ul>
+        </div>
+      </div>
     </div>
-    <div class="col-md-4">
-      <!-- Your sidebar or additional content goes here -->
-       <div id="summary"></div>
 
-  <ul id="expense-list"></ul>
-    </div>
-  </div>
-  </div>
+    <canvas id="expense-chart" width="400" height="200"></canvas>
 
- 
-
-  <canvas id="expense-chart" width="400" height="200"></canvas>
-
-  <script src="app.js"></script>
-</body>
+    <script src="app.js"></script>
+  </body>
 </html>
