@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
   const expenseList = document.getElementById("expense-list");
   const expenseForm = document.getElementById("expense-form");
 
@@ -126,24 +126,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to update summary and charts
 
-  function updateSummaryAndCharts() {
-    // Fetch expenses from the API on page load
-    fetch("http://localhost:3000/api/expenses")
-      .then((response) => response.json())
-      .then((expenses) => {
-        // Update chart data and labels
-        window.myChart.data.labels = expenses.map((expense) => expense.name);
-        window.myChart.data.datasets[0].data = expenses.map(
-          (expense) => expense.amount
-        );
-        window.myChart.update();
+  async function updateSummaryAndCharts() {
+    try {
+      // Fetch expenses from the API on page load
+      const response = await fetch("http://localhost:3000/api/expenses");
+      const expenses = await response.json();
 
-        // Update summary
-        updateSummary(expenses);
-      })
-      .catch((error) => {
-        console.error("Error fetching expenses:", error);
-      });
+      // Update chart data and labels
+      window.myChart.data.labels = expenses.map((expense) => expense.name);
+      window.myChart.data.datasets[0].data = expenses.map(
+        (expense) => expense.amount
+      );
+      window.myChart.update();
+
+      // Update summary
+      updateSummary(expenses);
+    } catch (error) {
+      console.error("Error fetching expenses:", error);
+    }
   }
 
   // Function to update summary
@@ -159,50 +159,50 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Fetch expenses from the API on page load
-  fetch("http://localhost:3000/api/expenses")
-    .then((response) => response.json())
-    .then((expenses) => {
-      // Populate the UI with default expenses
-      expenses.forEach((expense) => {
-        const listItem = createExpenseListItem(expense);
-        expenseList.appendChild(listItem);
-      });
+  try {
+    const response = await fetch("http://localhost:3000/api/expenses");
+    const expenses = await response.json();
 
-      // Create a new chart and store it in a global variable
-      const chartCanvas = document.getElementById("expense-chart");
-      const ctx = chartCanvas.getContext("2d");
-
-      const chartData = {
-        labels: expenses.map((expense) => expense.name),
-        datasets: [
-          {
-            label: "Expense Amount",
-            backgroundColor: "rgba(75, 192, 192, 0.2)",
-            borderColor: "rgba(75, 192, 192, 1)",
-            borderWidth: 1,
-            data: expenses.map((expense) => expense.amount),
-          },
-        ],
-      };
-
-      const chartOptions = {
-        scales: {
-          y: {
-            beginAtZero: true,
-          },
-        },
-      };
-
-      window.myChart = new Chart(ctx, {
-        type: "bar",
-        data: chartData,
-        options: chartOptions,
-      });
-
-      // Update summary after fetching expenses
-      updateSummary(expenses);
-    })
-    .catch((error) => {
-      console.error("Error fetching expenses:", error);
+    // Populate the UI with default expenses
+    expenses.forEach((expense) => {
+      const listItem = createExpenseListItem(expense);
+      expenseList.appendChild(listItem);
     });
+
+    // Create a new chart and store it in a global variable
+    const chartCanvas = document.getElementById("expense-chart");
+    const ctx = chartCanvas.getContext("2d");
+
+    const chartData = {
+      labels: expenses.map((expense) => expense.name),
+      datasets: [
+        {
+          label: "Expense Amount",
+          backgroundColor: "rgba(75, 192, 192, 0.2)",
+          borderColor: "rgba(75, 192, 192, 1)",
+          borderWidth: 1,
+          data: expenses.map((expense) => expense.amount),
+        },
+      ],
+    };
+
+    const chartOptions = {
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    };
+
+    window.myChart = new Chart(ctx, {
+      type: "bar",
+      data: chartData,
+      options: chartOptions,
+    });
+
+    // Update summary after fetching expenses
+    updateSummary(expenses);
+  } catch (error) {
+    console.error("Error fetching expenses:", error);
+  }
 });
