@@ -62,6 +62,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   window.deleteExpense = async function (expenseId) {
     try {
       // Make a DELETE request to remove the expense
+      // eslint-disable-next-line no-unused-vars
       const response = await fetch(
         `http://localhost:3000/api/expenses/${expenseId}`,
         {
@@ -194,6 +195,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       },
     };
 
+    // eslint-disable-next-line no-undef
     window.myChart = new Chart(ctx, {
       type: "bar",
       data: chartData,
