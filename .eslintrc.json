@@ -1,0 +1,17 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true // Add node environment
+  },
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "globals": {
+    "require": "readonly", // Allow 'require' as a global variable
+    "__dirname": "readonly" // Allow '__dirname' as a global variable
+  },
+  "rules": {}
+}
